@@ -1,184 +1,128 @@
-```html
 <!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>Thiệp 8/3</title>
+<title>Chúc mừng 8/3</title>
 
 <style>
 
 body{
 margin:0;
 font-family:Arial;
-background:linear-gradient(135deg,#ff9eb5,#ffc2d1);
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
+background:linear-gradient(135deg,#ffd6e7,#ffb6d9);
+text-align:center;
 overflow:hidden;
 }
 
-/* thiệp */
-
-.card{
-position:relative;
-width:360px;
-height:240px;
-perspective:1000px;
+h1{
+color:#d63384;
+margin-top:30px;
 }
 
-.cover{
-position:absolute;
-width:100%;
-height:100%;
-background:#ff4d88;
-color:white;
-display:flex;
-justify-content:center;
-align-items:center;
-font-size:28px;
-border-radius:20px;
-cursor:pointer;
-transform-origin:left;
-transition:transform 1s;
+.container{
+margin-top:40px;
 }
-
-.open .cover{
-transform:rotateY(-140deg);
-}
-
-.inside{
-position:absolute;
-width:100%;
-height:100%;
-background:white;
-border-radius:20px;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-padding:20px;
-box-shadow:0 10px 25px rgba(0,0,0,0.3);
-}
-
-/* input */
 
 input{
-padding:8px;
+padding:10px;
+font-size:18px;
 border-radius:10px;
-border:1px solid #ccc;
-margin-top:10px;
+border:none;
+width:120px;
+text-align:center;
 }
-
-/* nút */
 
 button{
-margin-top:10px;
-padding:8px 18px;
+padding:12px 20px;
+margin:10px;
 border:none;
-border-radius:10px;
-background:#ff4d88;
-color:white;
+border-radius:20px;
+font-size:16px;
 cursor:pointer;
+background:#ff69b4;
+color:white;
+transition:0.3s;
 }
 
-/* popup */
+button:hover{
+background:#ff1493;
+transform:scale(1.1);
+}
 
-.popup{
+.card{
+display:none;
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:white;
+padding:40px;
+border-radius:20px;
+box-shadow:0 0 20px rgba(0,0,0,0.2);
+width:300px;
+animation:pop 0.5s;
+}
+
+@keyframes pop{
+0%{transform:translate(-50%,-60%) scale(0.5)}
+100%{transform:translate(-50%,-50%) scale(1)}
+}
+
+.name{
+font-size:20px;
+font-weight:bold;
+color:#ff1493;
+}
+
+.wish{
+margin-top:10px;
+font-size:18px;
+}
+
+.petals{
 position:fixed;
 top:0;
 left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.4);
-display:none;
-justify-content:center;
-align-items:center;
-}
-
-.popup-box{
-background:white;
-padding:30px;
-border-radius:15px;
-text-align:center;
-width:300px;
-}
-
-/* hoa rơi */
-
-.fall{
-position:fixed;
-top:-20px;
-font-size:20px;
-animation:fall linear forwards;
-}
-
-@keyframes fall{
-to{
-transform:translateY(110vh);
-opacity:0;
-}
+pointer-events:none;
 }
 
 </style>
-
 </head>
 
 <body>
 
-<audio autoplay loop>
-<source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_2c3c0f9f65.mp3" type="audio/mpeg">
-</audio>
+<h1>🌸 Chúc mừng ngày 8/3 🌸</h1>
+<p>Nhập số thứ tự của bạn</p>
+
+<div class="container">
+
+<input id="stt" type="number">
+
+<br>
+
+<button onclick="showWish()">💌 Lời chúc</button>
+<button onclick="spin()">🎁 Quay thưởng</button>
+
+</div>
 
 <div class="card" id="card">
-
-<div class="cover" onclick="openCard()">
-🌸 Happy 8/3 🌸
+<div class="name" id="name"></div>
+<div class="wish">
+Chúc bạn luôn xinh đẹp, học giỏi và có một ngày 8/3 thật vui vẻ 💖
+</div>
+<br>
+<button onclick="closeCard()">Đóng</button>
 </div>
 
-<div class="inside">
+<audio autoplay loop>
+<source src="https://files.catbox.moe/7q6b5b.mp3" type="audio/mpeg">
+</audio>
 
-<h3>Nhập STT của bạn</h3>
-
-<input id="stt" placeholder="Ví dụ: 13">
-
-<button onclick="vao()">Xác nhận</button>
-
-<div id="menu" style="display:none">
-
-<p id="ten"></p>
-
-<button onclick="loichuc()">💌 Lời chúc</button>
-
-<button onclick="game()">🎮 Mini Game</button>
-
-<button onclick="quay()">🎁 Quay thưởng</button>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="popup" id="popup">
-
-<div class="popup-box">
-
-<h3>💌 Lời chúc</h3>
-
-<p id="text"></p>
-
-<button onclick="dong()">Đóng</button>
-
-</div>
-
-</div>
+<canvas class="petals" id="petals"></canvas>
 
 <script>
 
-/* danh sách nữ */
-
-let ten={
+const girls={
 1:"Dương Thị Thảo Ái",
 3:"Nguyễn Thị Bình Dương",
 4:"Nguyễn Thị Linh Đan",
@@ -189,10 +133,10 @@ let ten={
 11:"Hồ Thị Khánh Ly",
 12:"Võ Thị Ly",
 13:"Nguyễn Thị Thanh Mai",
-15:"Trần Thị Thanh Nga",
 14:"Lê Thị Thương Mây",
+15:"Trần Thị Thanh Nga",
 16:"Nguyễn Lê Thùy Ngân",
-18:"Nguyễn Thị Thanh Ngân",
+17:"Nguyễn Thị Thanh Ngân",
 20:"Trần Thị Thanh Ngọc",
 22:"Nguyễn Ngọc Phương Nhã",
 25:"Nguyễn Ngọc Quỳnh Như",
@@ -203,100 +147,106 @@ let ten={
 33:"Lê Thị Thắm",
 34:"Phan Thị Thơm",
 36:"Phan Thị Anh Thư",
+37:"Võ Thị Ngọc Trâm",
 38:"Võ Thị Thùy Trâm",
 39:"Mai Thị Vân",
 40:"Lê Thị Hà Vi"
 }
 
-let user=0
+function showWish(){
 
-function openCard(){
-document.getElementById("card").classList.add("open")
+let stt=document.getElementById("stt").value
+
+if(girls[stt]){
+document.getElementById("name").innerText="💗 "+girls[stt]
+document.getElementById("card").style.display="block"
 }
-
-function vao(){
-
-user=document.getElementById("stt").value
-
-if(!ten[user]){
-alert("STT này không phải bạn nữ 😄")
-return
-}
-
-document.getElementById("menu").style.display="block"
-
-document.getElementById("ten").innerHTML="Chào "+ten[user]+" 🌸"
-
-}
-
-/* lời chúc */
-
-function loichuc(){
-
-let msg="Chúc "+ten[user]+" luôn xinh đẹp, học giỏi và có một ngày 8/3 thật vui vẻ 💐"
-
-document.getElementById("text").innerText=msg
-
-document.getElementById("popup").style.display="flex"
-
-}
-
-function dong(){
-document.getElementById("popup").style.display="none"
-}
-
-/* game */
-
-function game(){
-
-let so=Math.floor(Math.random()*5)+1
-
-let doan=prompt("Đoán số từ 1 đến 5")
-
-if(doan==so){
-alert("🎉 Bạn thắng!")
-}else{
-alert("Sai rồi 😄 thử lại nhé")
+else{
+alert("Không có trong danh sách nữ")
 }
 
 }
 
-/* quay thưởng */
+function closeCard(){
+document.getElementById("card").style.display="none"
+}
 
-function quay(){
+function spin(){
 
-let ds=Object.values(ten)
+const prizes=[
+"🍬 Kẹo",
+"🍫 Chocolate",
+"🎁 Quà bí mật",
+"🌸 Hoa",
+"🍪 Bánh",
+"💖 Một lời khen"
+]
 
-let random=ds[Math.floor(Math.random()*ds.length)]
+let prize=prizes[Math.floor(Math.random()*prizes.length)]
 
-alert("🎉 Người trúng thưởng: "+random)
+alert("Bạn nhận được: "+prize)
 
 }
 
-/* hoa rơi */
+const canvas=document.getElementById("petals")
+const ctx=canvas.getContext("2d")
 
-function hoa(){
+canvas.width=window.innerWidth
+canvas.height=window.innerHeight
 
-let h=document.createElement("div")
+let petals=[]
 
-h.innerHTML="🌸"
+for(let i=0;i<40;i++){
+petals.push({
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
+r:Math.random()*4+1,
+d:Math.random()*1
+})
+}
 
-h.className="fall"
+function draw(){
 
-h.style.left=Math.random()*100+"vw"
+ctx.clearRect(0,0,canvas.width,canvas.height)
 
-h.style.animationDuration=(Math.random()*3+3)+"s"
+ctx.fillStyle="#ff69b4"
 
-document.body.appendChild(h)
+ctx.beginPath()
 
-setTimeout(()=>{h.remove()},6000)
+for(let i=0;i<petals.length;i++){
+
+let p=petals[i]
+
+ctx.moveTo(p.x,p.y)
+ctx.arc(p.x,p.y,p.r,0,Math.PI*2,true)
 
 }
 
-setInterval(hoa,300)
+ctx.fill()
+
+update()
+
+}
+
+function update(){
+
+for(let i=0;i<petals.length;i++){
+
+let p=petals[i]
+
+p.y+=p.d+1
+
+if(p.y>canvas.height){
+petals[i]={x:Math.random()*canvas.width,y:0,r:p.r,d:p.d}
+}
+
+}
+
+}
+
+setInterval(draw,33)
 
 </script>
 
 </body>
 </html>
-```
