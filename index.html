@@ -19,8 +19,6 @@ overflow:hidden;
 
 .overlay{
 position:fixed;
-top:0;
-left:0;
 width:100%;
 height:100%;
 background:rgba(255,255,255,0.4);
@@ -29,48 +27,42 @@ z-index:-1;
 }
 
 h1{
-margin-top:40px;
 font-family:Dancing Script;
 font-size:50px;
 color:#ff1493;
+margin-top:30px;
 }
-
-/* box nhập */
 
 .box{
 margin-top:40px;
-background:rgba(255,255,255,0.55);
+background:rgba(255,255,255,0.6);
 padding:25px;
 border-radius:20px;
 display:inline-block;
-backdrop-filter:blur(10px);
 box-shadow:0 10px 30px rgba(0,0,0,0.2);
 }
 
 input{
 padding:12px;
 font-size:18px;
+border-radius:10px;
 border:none;
-border-radius:12px;
-width:150px;
 text-align:center;
 }
 
 button{
 padding:12px 20px;
-margin:10px;
 border:none;
 border-radius:20px;
+background:#ff1493;
+color:white;
 font-size:16px;
 cursor:pointer;
-background:#ff69b4;
-color:white;
-transition:0.3s;
+margin:10px;
 }
 
 button:hover{
 transform:scale(1.1);
-background:#ff1493;
 }
 
 /* ===== THIỆP ===== */
@@ -81,54 +73,44 @@ position:fixed;
 top:50%;
 left:50%;
 transform:translate(-50%,-50%);
-perspective:1000px;
 }
 
-.letter{
-
+.envelope{
 width:420px;
 height:260px;
 position:relative;
-transform-style:preserve-3d;
-transition:1s;
 }
 
 .flap{
 position:absolute;
-width:100%;
-height:50%;
-background:#ff69b4;
+border-left:210px solid transparent;
+border-right:210px solid transparent;
+border-bottom:130px solid #ff69b4;
 top:0;
 transform-origin:top;
-border-radius:10px 10px 0 0;
 transition:1s;
-}
-
-.open .flap{
-transform:rotateX(-160deg);
 }
 
 .paper{
 
 position:absolute;
-top:20px;
-left:10px;
-width:400px;
-height:230px;
-background:white;
+width:380px;
+height:200px;
+background:#fffdf7;
+left:20px;
+top:40px;
 border-radius:10px;
-box-shadow:0 10px 20px rgba(0,0,0,0.3);
 padding:25px;
+
+box-shadow:0 10px 20px rgba(0,0,0,0.3);
 }
 
-.name{
-font-size:28px;
+.envelope.open .flap{
+transform:rotateX(180deg);
+}
+
+.paper h2{
 color:#ff1493;
-font-weight:bold;
-}
-
-.backBtn{
-margin-top:20px;
 }
 
 /* ===== VÒNG QUAY ===== */
@@ -141,42 +123,73 @@ left:50%;
 transform:translate(-50%,-50%);
 }
 
-.wheelContainer{
+.wheelGame{
 position:relative;
-width:420px;
-height:420px;
+width:450px;
+height:450px;
 }
 
 #wheel{
-width:400px;
-height:400px;
 border-radius:50%;
-border:8px solid white;
-box-shadow:0 0 30px rgba(0,0,0,0.3);
+border:12px solid white;
+box-shadow:
+0 0 0 8px #ff69b4,
+0 0 40px rgba(0,0,0,0.4);
+
 transition:transform 5s cubic-bezier(.17,.67,.28,1.33);
 }
 
 .pointer{
 position:absolute;
-top:-10px;
+top:-15px;
 left:50%;
 transform:translateX(-50%);
-font-size:50px;
-color:red;
+width:0;
+height:0;
+border-left:15px solid transparent;
+border-right:15px solid transparent;
+border-bottom:30px solid red;
+z-index:5;
 }
 
 .spinBtn{
+
 position:absolute;
 top:50%;
 left:50%;
+
 transform:translate(-50%,-50%);
-padding:15px 30px;
-font-size:18px;
+
+width:120px;
+height:120px;
+
+border-radius:50%;
+
 background:#ff1493;
+color:white;
+
+font-size:18px;
+border:none;
+
+cursor:pointer;
+
+}
+
+.back{
+
+margin-top:20px;
+padding:10px 20px;
+
+background:#ff69b4;
 border:none;
 color:white;
-border-radius:50px;
-cursor:pointer;
+border-radius:20px;
+
+position:absolute;
+left:50%;
+transform:translateX(-50%);
+bottom:-60px;
+
 }
 
 /* hoa */
@@ -206,28 +219,29 @@ pointer-events:none;
 <br>
 
 <button onclick="openLetter()">💌 Nhận thiệp</button>
+
 <button onclick="openWheel()">🎁 Vòng quay</button>
 
 </div>
 
-<!-- THIỆP -->
+<!-- ===== THIỆP ===== -->
 
 <div id="letterBox">
 
-<div class="letter" id="letter">
+<div class="envelope" id="envelope">
 
 <div class="flap"></div>
 
 <div class="paper">
 
-<div class="name" id="name"></div>
+<h2 id="name"></h2>
 
 <p>
 Chúc bạn luôn xinh đẹp, học giỏi và có một ngày
-<strong>8/3 thật vui vẻ 💖</strong>
+<strong>8/3 thật vui vẻ ❤️</strong>
 </p>
 
-<button class="backBtn" onclick="closeLetter()">⬅ Trở về</button>
+<button onclick="closeLetter()">← Trở về</button>
 
 </div>
 
@@ -235,21 +249,19 @@ Chúc bạn luôn xinh đẹp, học giỏi và có một ngày
 
 </div>
 
-<!-- VÒNG QUAY -->
+<!-- ===== VÒNG QUAY ===== -->
 
 <div id="wheelBox">
 
-<div class="wheelContainer">
+<div class="wheelGame">
 
-<div class="pointer">▼</div>
+<div class="pointer"></div>
 
-<canvas id="wheel" width="400" height="400"></canvas>
+<canvas id="wheel" width="450" height="450"></canvas>
 
 <button class="spinBtn" onclick="spin()">QUAY</button>
 
-<button onclick="closeWheel()" style="position:absolute;bottom:-60px;left:50%;transform:translateX(-50%)">
-⬅ Trở về
-</button>
+<button onclick="closeWheel()" class="back">← Trở về</button>
 
 </div>
 
@@ -308,8 +320,8 @@ document.getElementById("name").innerText=girls[stt]
 document.getElementById("letterBox").style.display="block"
 
 setTimeout(()=>{
-document.getElementById("letter").classList.add("open")
-},300)
+document.getElementById("envelope").classList.add("open")
+},200)
 
 }
 
@@ -317,19 +329,19 @@ function closeLetter(){
 
 document.getElementById("letterBox").style.display="none"
 
-document.getElementById("letter").classList.remove("open")
+document.getElementById("envelope").classList.remove("open")
 
 }
 
 /* ===== vòng quay ===== */
 
-const prizes=["🍬 Kẹo","🍫 Chocolate","🌸 Hoa","🎁 Quà","🍪 Bánh","💖 Lời khen"]
+const prizes=["Kẹo","Chocolate","Hoa","Quà","Bánh","Lời khen"]
 const colors=["#ff9aa2","#ffb7b2","#ffdac1","#e2f0cb","#b5ead7","#c7ceea"]
 
 const wheel=document.getElementById("wheel")
 const ctx=wheel.getContext("2d")
 
-const size=400
+const size=450
 const center=size/2
 const radius=200
 
@@ -340,22 +352,28 @@ const angle=(2*Math.PI)/prizes.length
 for(let i=0;i<prizes.length;i++){
 
 ctx.beginPath()
+
 ctx.moveTo(center,center)
+
 ctx.arc(center,center,radius,i*angle,(i+1)*angle)
 
 ctx.fillStyle=colors[i]
+
 ctx.fill()
 
 ctx.save()
 
 ctx.translate(center,center)
+
 ctx.rotate(i*angle+angle/2)
 
 ctx.fillStyle="#333"
-ctx.font="16px Poppins"
-ctx.textAlign="right"
 
-ctx.fillText(prizes[i],170,10)
+ctx.font="18px Poppins"
+
+ctx.textAlign="center"
+
+ctx.fillText(prizes[i],130,10)
 
 ctx.restore()
 
@@ -370,6 +388,7 @@ let rotation=0
 function spin(){
 
 let rand=Math.floor(Math.random()*prizes.length)
+
 let angle=360/prizes.length
 
 rotation+=360*5+(360-rand*angle)
@@ -390,7 +409,7 @@ function closeWheel(){
 document.getElementById("wheelBox").style.display="none"
 }
 
-/* hoa */
+/* ===== hoa rơi ===== */
 
 const canvas=document.getElementById("petals")
 const ctx2=canvas.getContext("2d")
@@ -405,7 +424,7 @@ for(let i=0;i<40;i++){
 petals.push({
 x:Math.random()*canvas.width,
 y:Math.random()*canvas.height,
-size:Math.random()*8+4,
+size:Math.random()*6+3,
 speed:Math.random()*1+0.5
 })
 
