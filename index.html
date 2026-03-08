@@ -1,59 +1,123 @@
+```html
 <!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>Chúc mừng 8/3</title>
+<title>Thiệp 8/3</title>
 
 <style>
 
 body{
-    margin:0;
-    font-family:Arial;
-    background:linear-gradient(135deg,#ff9eb5,#ffc2d1);
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
+margin:0;
+font-family:Arial;
+background:linear-gradient(135deg,#ff9eb5,#ffc2d1);
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+overflow:hidden;
 }
 
-.box{
-    background:white;
-    padding:40px;
-    border-radius:20px;
-    text-align:center;
-    width:350px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+/* thiệp */
+
+.card{
+position:relative;
+width:360px;
+height:240px;
+perspective:1000px;
 }
 
-h1{
-    color:#ff4d88;
+.cover{
+position:absolute;
+width:100%;
+height:100%;
+background:#ff4d88;
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:28px;
+border-radius:20px;
+cursor:pointer;
+transform-origin:left;
+transition:transform 1s;
 }
+
+.open .cover{
+transform:rotateY(-140deg);
+}
+
+.inside{
+position:absolute;
+width:100%;
+height:100%;
+background:white;
+border-radius:20px;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+padding:20px;
+box-shadow:0 10px 25px rgba(0,0,0,0.3);
+}
+
+/* input */
 
 input{
-    padding:10px;
-    width:80%;
-    border-radius:10px;
-    border:1px solid #ccc;
-    font-size:16px;
+padding:8px;
+border-radius:10px;
+border:1px solid #ccc;
+margin-top:10px;
 }
+
+/* nút */
 
 button{
-    margin-top:15px;
-    padding:12px 20px;
-    border:none;
-    border-radius:10px;
-    background:#ff4d88;
-    color:white;
-    font-size:16px;
-    cursor:pointer;
+margin-top:10px;
+padding:8px 18px;
+border:none;
+border-radius:10px;
+background:#ff4d88;
+color:white;
+cursor:pointer;
 }
 
-button:hover{
-    background:#ff1e6e;
+/* popup */
+
+.popup{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.4);
+display:none;
+justify-content:center;
+align-items:center;
 }
 
-.menu{
-    display:none;
+.popup-box{
+background:white;
+padding:30px;
+border-radius:15px;
+text-align:center;
+width:300px;
+}
+
+/* hoa rơi */
+
+.fall{
+position:fixed;
+top:-20px;
+font-size:20px;
+animation:fall linear forwards;
+}
+
+@keyframes fall{
+to{
+transform:translateY(110vh);
+opacity:0;
+}
 }
 
 </style>
@@ -62,31 +126,49 @@ button:hover{
 
 <body>
 
-<div class="box">
+<audio autoplay loop>
+<source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_2c3c0f9f65.mp3" type="audio/mpeg">
+</audio>
 
-<div id="login">
+<div class="card" id="card">
 
-<h1>🌸 8/3 🌸</h1>
-
-<p>Nhập số thứ tự của bạn</p>
-
-<input id="stt" placeholder="Ví dụ: 12">
-
-<br>
-
-<button onclick="vao()">Vào</button>
-
+<div class="cover" onclick="openCard()">
+🌸 Happy 8/3 🌸
 </div>
 
-<div class="menu" id="menu">
+<div class="inside">
 
-<h1>Chào bạn ❤️</h1>
+<h3>Nhập STT của bạn</h3>
+
+<input id="stt" placeholder="Ví dụ: 13">
+
+<button onclick="vao()">Xác nhận</button>
+
+<div id="menu" style="display:none">
+
+<p id="ten"></p>
 
 <button onclick="loichuc()">💌 Lời chúc</button>
 
-<br>
+<button onclick="game()">🎮 Mini Game</button>
 
-<button onclick="game()">🎮 Trò chơi</button>
+<button onclick="quay()">🎁 Quay thưởng</button>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="popup" id="popup">
+
+<div class="popup-box">
+
+<h3>💌 Lời chúc</h3>
+
+<p id="text"></p>
+
+<button onclick="dong()">Đóng</button>
 
 </div>
 
@@ -94,33 +176,127 @@ button:hover{
 
 <script>
 
+/* danh sách nữ */
+
+let ten={
+1:"Dương Thị Thảo Ái",
+3:"Nguyễn Thị Bình Dương",
+4:"Nguyễn Thị Linh Đan",
+7:"Nguyễn Thị Thúy Kiều",
+8:"Dương Thùy Linh",
+9:"Khổng Thị Linh",
+10:"Lê Thị Linh",
+11:"Hồ Thị Khánh Ly",
+12:"Võ Thị Ly",
+13:"Nguyễn Thị Thanh Mai",
+15:"Trần Thị Thanh Nga",
+14:"Lê Thị Thương Mây",
+16:"Nguyễn Lê Thùy Ngân",
+18:"Nguyễn Thị Thanh Ngân",
+20:"Trần Thị Thanh Ngọc",
+22:"Nguyễn Ngọc Phương Nhã",
+25:"Nguyễn Ngọc Quỳnh Như",
+28:"Nguyễn Thị Minh Phương",
+30:"Hoàng Thị Diệu Thanh",
+31:"Đào Thị Thanh Thảo",
+32:"Nguyễn Thị Thanh Thảo",
+33:"Lê Thị Thắm",
+34:"Phan Thị Thơm",
+36:"Phan Thị Anh Thư",
+38:"Võ Thị Thùy Trâm",
+39:"Mai Thị Vân",
+40:"Lê Thị Hà Vi"
+}
+
+let user=0
+
+function openCard(){
+document.getElementById("card").classList.add("open")
+}
+
 function vao(){
 
-let stt=document.getElementById("stt").value
+user=document.getElementById("stt").value
 
-if(stt==""){
-alert("Vui lòng nhập số thứ tự")
+if(!ten[user]){
+alert("STT này không phải bạn nữ 😄")
 return
 }
 
-document.getElementById("login").style.display="none"
 document.getElementById("menu").style.display="block"
 
+document.getElementById("ten").innerHTML="Chào "+ten[user]+" 🌸"
+
 }
+
+/* lời chúc */
 
 function loichuc(){
 
-alert("Chúc bạn luôn xinh đẹp, học giỏi và luôn vui vẻ. Chúc một ngày 8/3 thật ý nghĩa ❤️")
+let msg="Chúc "+ten[user]+" luôn xinh đẹp, học giỏi và có một ngày 8/3 thật vui vẻ 💐"
+
+document.getElementById("text").innerText=msg
+
+document.getElementById("popup").style.display="flex"
 
 }
+
+function dong(){
+document.getElementById("popup").style.display="none"
+}
+
+/* game */
 
 function game(){
 
-alert("Trò chơi sẽ mở sau...")
+let so=Math.floor(Math.random()*5)+1
+
+let doan=prompt("Đoán số từ 1 đến 5")
+
+if(doan==so){
+alert("🎉 Bạn thắng!")
+}else{
+alert("Sai rồi 😄 thử lại nhé")
+}
 
 }
+
+/* quay thưởng */
+
+function quay(){
+
+let ds=Object.values(ten)
+
+let random=ds[Math.floor(Math.random()*ds.length)]
+
+alert("🎉 Người trúng thưởng: "+random)
+
+}
+
+/* hoa rơi */
+
+function hoa(){
+
+let h=document.createElement("div")
+
+h.innerHTML="🌸"
+
+h.className="fall"
+
+h.style.left=Math.random()*100+"vw"
+
+h.style.animationDuration=(Math.random()*3+3)+"s"
+
+document.body.appendChild(h)
+
+setTimeout(()=>{h.remove()},6000)
+
+}
+
+setInterval(hoa,300)
 
 </script>
 
 </body>
 </html>
+```
