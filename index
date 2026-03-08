@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Chúc mừng 8/3</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family:Arial;
+    background:linear-gradient(135deg,#ff9eb5,#ffc2d1);
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.box{
+    background:white;
+    padding:40px;
+    border-radius:20px;
+    text-align:center;
+    width:350px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+h1{
+    color:#ff4d88;
+}
+
+input{
+    padding:10px;
+    width:80%;
+    border-radius:10px;
+    border:1px solid #ccc;
+    font-size:16px;
+}
+
+button{
+    margin-top:15px;
+    padding:12px 20px;
+    border:none;
+    border-radius:10px;
+    background:#ff4d88;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#ff1e6e;
+}
+
+.menu{
+    display:none;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="box">
+
+<div id="login">
+
+<h1>🌸 8/3 🌸</h1>
+
+<p>Nhập số thứ tự của bạn</p>
+
+<input id="stt" placeholder="Ví dụ: 12">
+
+<br>
+
+<button onclick="vao()">Vào</button>
+
+</div>
+
+<div class="menu" id="menu">
+
+<h1>Chào bạn ❤️</h1>
+
+<button onclick="loichuc()">💌 Lời chúc</button>
+
+<br>
+
+<button onclick="game()">🎮 Trò chơi</button>
+
+</div>
+
+</div>
+
+<script>
+
+function vao(){
+
+let stt=document.getElementById("stt").value
+
+if(stt==""){
+alert("Vui lòng nhập số thứ tự")
+return
+}
+
+document.getElementById("login").style.display="none"
+document.getElementById("menu").style.display="block"
+
+}
+
+function loichuc(){
+
+alert("Chúc bạn luôn xinh đẹp, học giỏi và luôn vui vẻ. Chúc một ngày 8/3 thật ý nghĩa ❤️")
+
+}
+
+function game(){
+
+alert("Trò chơi sẽ mở sau...")
+
+}
+
+</script>
+
+</body>
+</html>
