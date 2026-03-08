@@ -8,28 +8,36 @@
 
 body{
 margin:0;
-font-family:Arial;
+font-family:Segoe UI;
 background:linear-gradient(135deg,#ffd6e7,#ffb6d9);
 text-align:center;
 overflow:hidden;
 }
 
 h1{
+margin-top:40px;
 color:#d63384;
-margin-top:30px;
+font-size:40px;
 }
 
-.container{
+.box{
 margin-top:40px;
+background:rgba(255,255,255,0.3);
+display:inline-block;
+padding:25px;
+border-radius:20px;
+backdrop-filter:blur(10px);
+box-shadow:0 10px 25px rgba(0,0,0,0.2);
 }
 
 input{
-padding:10px;
+padding:12px;
 font-size:18px;
-border-radius:10px;
 border:none;
-width:120px;
+border-radius:12px;
 text-align:center;
+width:140px;
+outline:none;
 }
 
 button{
@@ -45,8 +53,8 @@ transition:0.3s;
 }
 
 button:hover{
-background:#ff1493;
 transform:scale(1.1);
+background:#ff1493;
 }
 
 .card{
@@ -56,20 +64,14 @@ top:50%;
 left:50%;
 transform:translate(-50%,-50%);
 background:white;
-padding:40px;
+padding:35px;
 border-radius:20px;
-box-shadow:0 0 20px rgba(0,0,0,0.2);
-width:300px;
-animation:pop 0.5s;
-}
-
-@keyframes pop{
-0%{transform:translate(-50%,-60%) scale(0.5)}
-100%{transform:translate(-50%,-50%) scale(1)}
+width:320px;
+box-shadow:0 0 30px rgba(0,0,0,0.3);
 }
 
 .name{
-font-size:20px;
+font-size:22px;
 font-weight:bold;
 color:#ff1493;
 }
@@ -79,7 +81,43 @@ margin-top:10px;
 font-size:18px;
 }
 
-.petals{
+/* máy bay */
+
+.plane{
+position:fixed;
+font-size:50px;
+left:-100px;
+top:60%;
+transition:2s cubic-bezier(.4,.8,.2,1);
+}
+
+/* vòng quay */
+
+#wheelBox{
+display:none;
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+text-align:center;
+}
+
+#wheel{
+width:320px;
+height:320px;
+border-radius:50%;
+border:10px solid white;
+box-shadow:0 0 30px rgba(0,0,0,0.3);
+transition:transform 4s cubic-bezier(.2,.8,.3,1);
+}
+
+.pointer{
+font-size:45px;
+}
+
+/* hoa */
+
+canvas{
 position:fixed;
 top:0;
 left:0;
@@ -91,34 +129,56 @@ pointer-events:none;
 
 <body>
 
-<h1>🌸 Chúc mừng ngày 8/3 🌸</h1>
-<p>Nhập số thứ tự của bạn</p>
+<h1>🌸 Chúc mừng 8/3 🌸</h1>
 
-<div class="container">
+<div class="box">
+
+<p>Nhập số thứ tự của bạn</p>
 
 <input id="stt" type="number">
 
 <br>
 
-<button onclick="showWish()">💌 Lời chúc</button>
-<button onclick="spin()">🎁 Quay thưởng</button>
+<button onclick="sendPlane()">✈ Nhận lời chúc</button>
+
+<button onclick="openWheel()">🎁 Vòng quay</button>
 
 </div>
 
+<div class="plane" id="plane">✈</div>
+
 <div class="card" id="card">
+
 <div class="name" id="name"></div>
+
 <div class="wish">
 Chúc bạn luôn xinh đẹp, học giỏi và có một ngày 8/3 thật vui vẻ 💖
 </div>
+
 <br>
+
 <button onclick="closeCard()">Đóng</button>
+
 </div>
 
-<audio autoplay loop>
-<source src="https://files.catbox.moe/7q6b5b.mp3" type="audio/mpeg">
+<div id="wheelBox">
+
+<div class="pointer">🔻</div>
+
+<canvas id="wheel" width="320" height="320"></canvas>
+
+<br>
+
+<button onclick="spin()">Quay</button>
+<button onclick="closeWheel()">Đóng</button>
+
+</div>
+
+<audio id="spinSound">
+<source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_115b9bda63.mp3">
 </audio>
 
-<canvas class="petals" id="petals"></canvas>
+<canvas id="petals"></canvas>
 
 <script>
 
@@ -153,17 +213,28 @@ const girls={
 40:"Lê Thị Hà Vi"
 }
 
-function showWish(){
+function sendPlane(){
 
 let stt=document.getElementById("stt").value
 
-if(girls[stt]){
-document.getElementById("name").innerText="💗 "+girls[stt]
-document.getElementById("card").style.display="block"
-}
-else{
+if(!girls[stt]){
 alert("Không có trong danh sách nữ")
+return
 }
+
+let plane=document.getElementById("plane")
+
+plane.style.left="50%"
+
+setTimeout(()=>{
+
+plane.style.left="120%"
+
+document.getElementById("name").innerText="💗 "+girls[stt]
+
+document.getElementById("card").style.display="block"
+
+},1800)
 
 }
 
@@ -171,80 +242,133 @@ function closeCard(){
 document.getElementById("card").style.display="none"
 }
 
-function spin(){
+/* vòng quay */
 
 const prizes=[
 "🍬 Kẹo",
 "🍫 Chocolate",
-"🎁 Quà bí mật",
 "🌸 Hoa",
+"🎁 Quà bí mật",
 "🍪 Bánh",
-"💖 Một lời khen"
+"💖 Lời khen"
 ]
 
-let prize=prizes[Math.floor(Math.random()*prizes.length)]
+const colors=["#ff9aa2","#ffb7b2","#ffdac1","#e2f0cb","#b5ead7","#c7ceea"]
 
-alert("Bạn nhận được: "+prize)
+const wheel=document.getElementById("wheel")
+const ctx=wheel.getContext("2d")
+
+function drawWheel(){
+
+let angle=2*Math.PI/prizes.length
+
+for(let i=0;i<prizes.length;i++){
+
+ctx.beginPath()
+
+ctx.moveTo(160,160)
+
+ctx.arc(160,160,160,i*angle,(i+1)*angle)
+
+ctx.fillStyle=colors[i]
+
+ctx.fill()
+
+ctx.save()
+
+ctx.translate(160,160)
+
+ctx.rotate(angle*(i+0.5))
+
+ctx.fillStyle="#333"
+
+ctx.fillText(prizes[i],80,5)
+
+ctx.restore()
 
 }
 
+}
+
+drawWheel()
+
+let rotation=0
+
+function spin(){
+
+document.getElementById("spinSound").play()
+
+let rand=Math.floor(Math.random()*prizes.length)
+
+let angle=360/prizes.length
+
+rotation+=360*5+(360-rand*angle)
+
+wheel.style.transform="rotate("+rotation+"deg)"
+
+setTimeout(()=>{
+alert("Bạn nhận được: "+prizes[rand])
+},4000)
+
+}
+
+function openWheel(){
+document.getElementById("wheelBox").style.display="block"
+}
+
+function closeWheel(){
+document.getElementById("wheelBox").style.display="none"
+}
+
+/* hoa đào */
+
 const canvas=document.getElementById("petals")
-const ctx=canvas.getContext("2d")
+const ctx2=canvas.getContext("2d")
 
 canvas.width=window.innerWidth
 canvas.height=window.innerHeight
 
 let petals=[]
 
-for(let i=0;i<40;i++){
+for(let i=0;i<70;i++){
 petals.push({
 x:Math.random()*canvas.width,
 y:Math.random()*canvas.height,
-r:Math.random()*4+1,
-d:Math.random()*1
+size:Math.random()*8+4,
+speed:Math.random()*2+1
 })
 }
 
-function draw(){
+function drawPetals(){
 
-ctx.clearRect(0,0,canvas.width,canvas.height)
+ctx2.clearRect(0,0,canvas.width,canvas.height)
 
-ctx.fillStyle="#ff69b4"
+for(let p of petals){
 
-ctx.beginPath()
+ctx2.fillStyle="#ff69b4"
 
-for(let i=0;i<petals.length;i++){
+ctx2.beginPath()
 
-let p=petals[i]
+ctx2.ellipse(p.x,p.y,p.size/2,p.size,0,0,Math.PI*2)
 
-ctx.moveTo(p.x,p.y)
-ctx.arc(p.x,p.y,p.r,0,Math.PI*2,true)
+ctx2.fill()
 
-}
+p.y+=p.speed
 
-ctx.fill()
-
-update()
-
-}
-
-function update(){
-
-for(let i=0;i<petals.length;i++){
-
-let p=petals[i]
-
-p.y+=p.d+1
+p.x+=Math.sin(p.y*0.01)
 
 if(p.y>canvas.height){
-petals[i]={x:Math.random()*canvas.width,y:0,r:p.r,d:p.d}
+p.y=0
+p.x=Math.random()*canvas.width
 }
 
 }
 
+requestAnimationFrame(drawPetals)
+
 }
 
-setInterval(draw,33)
+drawPetals()
 
 </script>
 
