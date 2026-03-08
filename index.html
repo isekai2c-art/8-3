@@ -9,25 +9,43 @@
 body{
 margin:0;
 font-family:Segoe UI;
-background:linear-gradient(135deg,#ffd6e7,#ffb6d9);
+background:url("background.jpg") no-repeat center center fixed;
+background-size:cover;
 text-align:center;
 overflow:hidden;
 }
 
+/* lớp phủ */
+
+.overlay{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(255,255,255,0.45);
+backdrop-filter:blur(4px);
+z-index:-1;
+}
+
+/* tiêu đề */
+
 h1{
 margin-top:40px;
 color:#d63384;
-font-size:40px;
+font-size:42px;
 }
+
+/* box */
 
 .box{
 margin-top:40px;
-background:rgba(255,255,255,0.3);
-display:inline-block;
+background:rgba(255,255,255,0.5);
 padding:25px;
 border-radius:20px;
+display:inline-block;
 backdrop-filter:blur(10px);
-box-shadow:0 10px 25px rgba(0,0,0,0.2);
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
 }
 
 input{
@@ -35,9 +53,8 @@ padding:12px;
 font-size:18px;
 border:none;
 border-radius:12px;
+width:150px;
 text-align:center;
-width:140px;
-outline:none;
 }
 
 button{
@@ -53,42 +70,57 @@ transition:0.3s;
 }
 
 button:hover{
-transform:scale(1.1);
 background:#ff1493;
-}
-
-.card{
-display:none;
-position:fixed;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-background:white;
-padding:35px;
-border-radius:20px;
-width:320px;
-box-shadow:0 0 30px rgba(0,0,0,0.3);
-}
-
-.name{
-font-size:22px;
-font-weight:bold;
-color:#ff1493;
-}
-
-.wish{
-margin-top:10px;
-font-size:18px;
+transform:scale(1.1);
 }
 
 /* máy bay */
 
 .plane{
 position:fixed;
-font-size:50px;
-left:-100px;
-top:60%;
-transition:2s cubic-bezier(.4,.8,.2,1);
+font-size:60px;
+top:25%;
+left:-200px;
+transition:3s linear;
+}
+
+/* phong bì */
+
+.envelope{
+display:none;
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+width:320px;
+height:220px;
+background:white;
+border-radius:10px;
+box-shadow:0 0 30px rgba(0,0,0,0.3);
+overflow:hidden;
+}
+
+.flap{
+position:absolute;
+width:100%;
+height:100%;
+background:#ff69b4;
+clip-path:polygon(0 0,100% 0,50% 60%);
+transform-origin:top;
+transition:1s;
+}
+
+.letter{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+}
+
+.name{
+font-size:22px;
+font-weight:bold;
+color:#ff1493;
 }
 
 /* vòng quay */
@@ -99,7 +131,6 @@ position:fixed;
 top:50%;
 left:50%;
 transform:translate(-50%,-50%);
-text-align:center;
 }
 
 #wheel{
@@ -107,15 +138,14 @@ width:320px;
 height:320px;
 border-radius:50%;
 border:10px solid white;
-box-shadow:0 0 30px rgba(0,0,0,0.3);
-transition:transform 4s cubic-bezier(.2,.8,.3,1);
+transition:transform 4s ease-out;
 }
 
 .pointer{
 font-size:45px;
 }
 
-/* hoa */
+/* canvas */
 
 canvas{
 position:fixed;
@@ -129,35 +159,40 @@ pointer-events:none;
 
 <body>
 
-<h1>🌸 Chúc mừng 8/3 🌸</h1>
+<div class="overlay"></div>
+
+<h1>🌸 Chúc mừng ngày 8/3 🌸</h1>
 
 <div class="box">
 
-<p>Nhập số thứ tự của bạn</p>
+<p>Nhập STT của bạn</p>
 
 <input id="stt" type="number">
 
 <br>
 
-<button onclick="sendPlane()">✈ Nhận lời chúc</button>
-
+<button onclick="startPlane()">💌 Nhận lời chúc</button>
 <button onclick="openWheel()">🎁 Vòng quay</button>
 
 </div>
 
 <div class="plane" id="plane">✈</div>
 
-<div class="card" id="card">
+<div class="envelope" id="env">
+
+<div class="flap" id="flap"></div>
+
+<div class="letter">
 
 <div class="name" id="name"></div>
 
-<div class="wish">
-Chúc bạn luôn xinh đẹp, học giỏi và có một ngày 8/3 thật vui vẻ 💖
-</div>
+<p>Chúc bạn luôn xinh đẹp, học giỏi và có một ngày 8/3 thật vui vẻ 💖</p>
 
 <br>
 
-<button onclick="closeCard()">Đóng</button>
+<button onclick="closeLetter()">Đóng</button>
+
+</div>
 
 </div>
 
@@ -181,6 +216,8 @@ Chúc bạn luôn xinh đẹp, học giỏi và có một ngày 8/3 thật vui v
 <canvas id="petals"></canvas>
 
 <script>
+
+/* danh sách */
 
 const girls={
 1:"Dương Thị Thảo Ái",
@@ -213,7 +250,9 @@ const girls={
 40:"Lê Thị Hà Vi"
 }
 
-function sendPlane(){
+/* máy bay */
+
+function startPlane(){
 
 let stt=document.getElementById("stt").value
 
@@ -224,22 +263,24 @@ return
 
 let plane=document.getElementById("plane")
 
-plane.style.left="50%"
+plane.style.left="110%"
 
 setTimeout(()=>{
 
-plane.style.left="120%"
+document.getElementById("env").style.display="block"
 
-document.getElementById("name").innerText="💗 "+girls[stt]
+document.getElementById("name").innerText=girls[stt]
 
-document.getElementById("card").style.display="block"
+setTimeout(()=>{
+document.getElementById("flap").style.transform="rotateX(180deg)"
+},500)
 
-},1800)
+},2800)
 
 }
 
-function closeCard(){
-document.getElementById("card").style.display="none"
+function closeLetter(){
+document.getElementById("env").style.display="none"
 }
 
 /* vòng quay */
@@ -265,25 +306,17 @@ let angle=2*Math.PI/prizes.length
 for(let i=0;i<prizes.length;i++){
 
 ctx.beginPath()
-
 ctx.moveTo(160,160)
-
 ctx.arc(160,160,160,i*angle,(i+1)*angle)
 
 ctx.fillStyle=colors[i]
-
 ctx.fill()
 
 ctx.save()
-
 ctx.translate(160,160)
-
 ctx.rotate(angle*(i+0.5))
-
 ctx.fillStyle="#333"
-
 ctx.fillText(prizes[i],80,5)
-
 ctx.restore()
 
 }
@@ -308,6 +341,7 @@ wheel.style.transform="rotate("+rotation+"deg)"
 
 setTimeout(()=>{
 alert("Bạn nhận được: "+prizes[rand])
+fireworks()
 },4000)
 
 }
@@ -320,7 +354,7 @@ function closeWheel(){
 document.getElementById("wheelBox").style.display="none"
 }
 
-/* hoa đào */
+/* hoa */
 
 const canvas=document.getElementById("petals")
 const ctx2=canvas.getContext("2d")
@@ -348,14 +382,11 @@ for(let p of petals){
 ctx2.fillStyle="#ff69b4"
 
 ctx2.beginPath()
-
 ctx2.ellipse(p.x,p.y,p.size/2,p.size,0,0,Math.PI*2)
-
 ctx2.fill()
 
 p.y+=p.speed
-
-p.x+=Math.sin(p.y*0.01)
+p.x+=Math.sin(p.y*0.02)
 
 if(p.y>canvas.height){
 p.y=0
@@ -369,6 +400,41 @@ requestAnimationFrame(drawPetals)
 }
 
 drawPetals()
+
+/* pháo hoa */
+
+function fireworks(){
+
+for(let i=0;i<30;i++){
+
+let div=document.createElement("div")
+
+div.style.position="fixed"
+div.style.left="50%"
+div.style.top="50%"
+div.style.width="6px"
+div.style.height="6px"
+div.style.background="gold"
+div.style.borderRadius="50%"
+div.style.transition="1s"
+
+document.body.appendChild(div)
+
+let x=(Math.random()-0.5)*600
+let y=(Math.random()-0.5)*600
+
+setTimeout(()=>{
+div.style.transform="translate("+x+"px,"+y+"px)"
+div.style.opacity=0
+},10)
+
+setTimeout(()=>{
+div.remove()
+},1000)
+
+}
+
+}
 
 </script>
 
