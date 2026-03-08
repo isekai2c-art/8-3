@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -9,13 +10,11 @@
 body{
 margin:0;
 font-family:Segoe UI;
-background:url("background.jpg") no-repeat center center fixed;
+background:url("https://cdn-media.sforum.vn/storage/app/media/ctvseo_MH/hihf%20n%E1%BB%81n%208.3/hinh-nen-8-3-14.jpg") no-repeat center center fixed;
 background-size:cover;
 text-align:center;
 overflow:hidden;
 }
-
-/* lớp phủ */
 
 .overlay{
 position:fixed;
@@ -28,19 +27,17 @@ backdrop-filter:blur(4px);
 z-index:-1;
 }
 
-/* tiêu đề */
-
 h1{
 margin-top:40px;
 color:#d63384;
 font-size:42px;
 }
 
-/* box */
+/* box nhập */
 
 .box{
 margin-top:40px;
-background:rgba(255,255,255,0.5);
+background:rgba(255,255,255,0.55);
 padding:25px;
 border-radius:20px;
 display:inline-block;
@@ -76,45 +73,47 @@ transform:scale(1.1);
 
 /* máy bay */
 
-.plane{
+.planeBox{
 position:fixed;
-font-size:60px;
-top:25%;
-left:-200px;
-transition:3s linear;
+top:120px;
+left:-600px;
+display:flex;
+align-items:center;
+gap:15px;
+transition:5s linear;
+z-index:5;
 }
 
-/* phong bì */
+.planeImg{
+width:180px;
+}
 
-.envelope{
-display:none;
+.banner{
+background:#ff1493;
+color:white;
+padding:10px 20px;
+border-radius:10px;
+font-weight:bold;
+white-space:nowrap;
+box-shadow:0 0 15px rgba(0,0,0,0.3);
+}
+
+/* thiệp */
+
+.cardDrop{
 position:fixed;
-top:50%;
+top:-200px;
 left:50%;
-transform:translate(-50%,-50%);
-width:320px;
-height:220px;
+transform:translateX(-50%);
+width:260px;
 background:white;
 border-radius:10px;
-box-shadow:0 0 30px rgba(0,0,0,0.3);
-overflow:hidden;
-}
-
-.flap{
-position:absolute;
-width:100%;
-height:100%;
-background:#ff69b4;
-clip-path:polygon(0 0,100% 0,50% 60%);
-transform-origin:top;
+box-shadow:0 0 20px rgba(0,0,0,0.3);
 transition:1s;
 }
 
-.letter{
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
+.cardInner{
+padding:20px;
 }
 
 .name{
@@ -133,19 +132,45 @@ left:50%;
 transform:translate(-50%,-50%);
 }
 
+.wheelContainer{
+position:relative;
+width:400px;
+height:400px;
+}
+
 #wheel{
-width:320px;
-height:320px;
+width:400px;
+height:400px;
 border-radius:50%;
-border:10px solid white;
-transition:transform 4s ease-out;
+border:8px solid white;
+box-shadow:0 0 30px rgba(0,0,0,0.3);
+transition:transform 5s cubic-bezier(.2,.8,.2,1);
 }
 
 .pointer{
-font-size:45px;
+position:absolute;
+top:-20px;
+left:50%;
+transform:translateX(-50%);
+font-size:40px;
+color:red;
 }
 
-/* canvas */
+.spinBtn{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+padding:15px 30px;
+font-size:18px;
+background:#ff1493;
+color:white;
+border:none;
+border-radius:50px;
+cursor:pointer;
+}
+
+/* hoa */
 
 canvas{
 position:fixed;
@@ -176,36 +201,46 @@ pointer-events:none;
 
 </div>
 
-<div class="plane" id="plane">✈</div>
+<!-- máy bay -->
 
-<div class="envelope" id="env">
+<div class="planeBox" id="planeBox">
 
-<div class="flap" id="flap"></div>
+<img class="planeImg"
+src="https://cdn-icons-png.flaticon.com/512/2972/2972185.png">
 
-<div class="letter">
+<div class="banner">
+Happy Women's Day
+</div>
+
+</div>
+
+<!-- thiệp -->
+
+<div class="cardDrop" id="cardDrop">
+
+<div class="cardInner">
 
 <div class="name" id="name"></div>
 
 <p>Chúc bạn luôn xinh đẹp, học giỏi và có một ngày 8/3 thật vui vẻ 💖</p>
 
-<br>
-
-<button onclick="closeLetter()">Đóng</button>
-
 </div>
 
 </div>
+
+<!-- vòng quay -->
 
 <div id="wheelBox">
 
-<div class="pointer">🔻</div>
+<div class="wheelContainer">
 
-<canvas id="wheel" width="320" height="320"></canvas>
+<div class="pointer">▼</div>
 
-<br>
+<canvas id="wheel" width="400" height="400"></canvas>
 
-<button onclick="spin()">Quay</button>
-<button onclick="closeWheel()">Đóng</button>
+<button class="spinBtn" onclick="spin()">QUAY</button>
+
+</div>
 
 </div>
 
@@ -261,62 +296,55 @@ alert("Không có trong danh sách nữ")
 return
 }
 
-let plane=document.getElementById("plane")
+document.getElementById("name").innerText=girls[stt]
+
+let plane=document.getElementById("planeBox")
 
 plane.style.left="110%"
 
 setTimeout(()=>{
+document.getElementById("cardDrop").style.top="200px"
+},2500)
 
-document.getElementById("env").style.display="block"
-
-document.getElementById("name").innerText=girls[stt]
-
-setTimeout(()=>{
-document.getElementById("flap").style.transform="rotateX(180deg)"
-},500)
-
-},2800)
-
-}
-
-function closeLetter(){
-document.getElementById("env").style.display="none"
 }
 
 /* vòng quay */
 
-const prizes=[
-"🍬 Kẹo",
-"🍫 Chocolate",
-"🌸 Hoa",
-"🎁 Quà bí mật",
-"🍪 Bánh",
-"💖 Lời khen"
-]
+const prizes=["🍬 Kẹo","🍫 Chocolate","🌸 Hoa","🎁 Quà","🍪 Bánh","💖 Lời khen"]
 
 const colors=["#ff9aa2","#ffb7b2","#ffdac1","#e2f0cb","#b5ead7","#c7ceea"]
 
 const wheel=document.getElementById("wheel")
 const ctx=wheel.getContext("2d")
 
+const size=400
+const center=size/2
+const radius=200
+
 function drawWheel(){
 
-let angle=2*Math.PI/prizes.length
+const angle=(2*Math.PI)/prizes.length
 
 for(let i=0;i<prizes.length;i++){
 
 ctx.beginPath()
-ctx.moveTo(160,160)
-ctx.arc(160,160,160,i*angle,(i+1)*angle)
+ctx.moveTo(center,center)
+ctx.arc(center,center,radius,i*angle,(i+1)*angle)
 
 ctx.fillStyle=colors[i]
 ctx.fill()
 
 ctx.save()
-ctx.translate(160,160)
-ctx.rotate(angle*(i+0.5))
+
+ctx.translate(center,center)
+ctx.rotate(i*angle+angle/2)
+
 ctx.fillStyle="#333"
-ctx.fillText(prizes[i],80,5)
+ctx.font="16px Arial"
+ctx.textAlign="right"
+
+ctx.fillText(prizes[i],170,10)
+
 ctx.restore()
 
 }
@@ -341,8 +369,7 @@ wheel.style.transform="rotate("+rotation+"deg)"
 
 setTimeout(()=>{
 alert("Bạn nhận được: "+prizes[rand])
-fireworks()
-},4000)
+},5000)
 
 }
 
@@ -350,11 +377,7 @@ function openWheel(){
 document.getElementById("wheelBox").style.display="block"
 }
 
-function closeWheel(){
-document.getElementById("wheelBox").style.display="none"
-}
-
-/* hoa */
+/* hoa anh đào PNG */
 
 const canvas=document.getElementById("petals")
 const ctx2=canvas.getContext("2d")
@@ -363,14 +386,19 @@ canvas.width=window.innerWidth
 canvas.height=window.innerHeight
 
 let petals=[]
+const img=new Image()
+img.src="https://pngimg.com/uploads/cherry_blossom/cherry_blossom_PNG9.png"
 
-for(let i=0;i<70;i++){
+for(let i=0;i<40;i++){
+
 petals.push({
 x:Math.random()*canvas.width,
 y:Math.random()*canvas.height,
-size:Math.random()*8+4,
-speed:Math.random()*2+1
+size:Math.random()*30+20,
+speed:Math.random()*1+0.5,
+angle:Math.random()*360
 })
+
 }
 
 function drawPetals(){
@@ -379,14 +407,18 @@ ctx2.clearRect(0,0,canvas.width,canvas.height)
 
 for(let p of petals){
 
-ctx2.fillStyle="#ff69b4"
+ctx2.save()
 
-ctx2.beginPath()
-ctx2.ellipse(p.x,p.y,p.size/2,p.size,0,0,Math.PI*2)
-ctx2.fill()
+ctx2.translate(p.x,p.y)
+ctx2.rotate(p.angle*Math.PI/180)
+
+ctx2.drawImage(img,-p.size/2,-p.size/2,p.size,p.size)
+
+ctx2.restore()
 
 p.y+=p.speed
-p.x+=Math.sin(p.y*0.02)
+p.x+=Math.sin(p.y*0.01)
+p.angle+=0.2
 
 if(p.y>canvas.height){
 p.y=0
@@ -399,44 +431,10 @@ requestAnimationFrame(drawPetals)
 
 }
 
-drawPetals()
-
-/* pháo hoa */
-
-function fireworks(){
-
-for(let i=0;i<30;i++){
-
-let div=document.createElement("div")
-
-div.style.position="fixed"
-div.style.left="50%"
-div.style.top="50%"
-div.style.width="6px"
-div.style.height="6px"
-div.style.background="gold"
-div.style.borderRadius="50%"
-div.style.transition="1s"
-
-document.body.appendChild(div)
-
-let x=(Math.random()-0.5)*600
-let y=(Math.random()-0.5)*600
-
-setTimeout(()=>{
-div.style.transform="translate("+x+"px,"+y+"px)"
-div.style.opacity=0
-},10)
-
-setTimeout(()=>{
-div.remove()
-},1000)
-
-}
-
-}
+img.onload=drawPetals
 
 </script>
 
 </body>
 </html>
+```
