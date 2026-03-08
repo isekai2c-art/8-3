@@ -2,27 +2,19 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
+
 <title>Chúc mừng 8/3</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
 
 <style>
 
 body{
 margin:0;
 font-family:Poppins;
-background:url("https://cdn-media.sforum.vn/storage/app/media/ctvseo_MH/hihf%20n%E1%BB%81n%208.3/hinh-nen-8-3-14.jpg") no-repeat center center fixed;
-background-size:cover;
+background:url("https://cdn-media.sforum.vn/storage/app/media/ctvseo_MH/hihf%20n%E1%BB%81n%208.3/hinh-nen-8-3-14.jpg") center/cover fixed;
 text-align:center;
-}
-
-.overlay{
-position:fixed;
-width:100%;
-height:100%;
-background:rgba(255,255,255,0.4);
-backdrop-filter:blur(5px);
-z-index:-1;
+overflow:hidden;
 }
 
 h1{
@@ -33,171 +25,216 @@ margin-top:30px;
 }
 
 .box{
-margin-top:40px;
+
 background:rgba(255,255,255,0.6);
-padding:25px;
-border-radius:20px;
+
 display:inline-block;
-box-shadow:0 10px 30px rgba(0,0,0,0.2);
+padding:25px;
+
+border-radius:20px;
+
+margin-top:40px;
+
 }
 
 input{
-padding:12px;
+
+padding:10px;
 font-size:18px;
 border-radius:10px;
 border:none;
-text-align:center;
+
 }
 
 button{
-padding:12px 20px;
+
+padding:10px 20px;
+
 border:none;
-border-radius:20px;
+
 background:#ff1493;
+
 color:white;
-font-size:16px;
-cursor:pointer;
+
+border-radius:20px;
+
 margin:10px;
+
+cursor:pointer;
+
 }
 
 button:hover{
 transform:scale(1.1);
 }
 
-/* ===== THIỆP ===== */
+/* ================= */
+/* THIỆP */
+/* ================= */
 
 #letterBox{
+
 display:none;
+
 position:fixed;
+
 top:50%;
 left:50%;
+
 transform:translate(-50%,-50%);
+
 }
 
 .envelope{
+
+position:relative;
+
 width:420px;
 height:260px;
-position:relative;
+
 }
+
+/* thân phong bì */
+
+.body{
+
+position:absolute;
+
+width:100%;
+height:180px;
+
+bottom:0;
+
+background:#ff69b4;
+
+border-radius:8px;
+
+}
+
+/* nắp */
 
 .flap{
+
 position:absolute;
+
+width:0;
+height:0;
+
 border-left:210px solid transparent;
 border-right:210px solid transparent;
-border-bottom:130px solid #ff69b4;
+
+border-bottom:130px solid #ff4fa0;
+
 top:0;
+
 transform-origin:top;
+
 transition:1s;
+
 }
 
-.paper{
+/* giấy */
+
+.letter{
 
 position:absolute;
-width:380px;
-height:200px;
-background:#fffdf7;
-left:20px;
-top:40px;
+
+width:360px;
+height:180px;
+
+background:white;
+
+left:30px;
+
+bottom:20px;
+
 border-radius:10px;
-padding:25px;
+
+padding:20px;
 
 box-shadow:0 10px 20px rgba(0,0,0,0.3);
+
+transition:1s;
+
 }
+
+/* mở */
 
 .envelope.open .flap{
 transform:rotateX(180deg);
 }
 
-.paper h2{
-color:#ff1493;
+.envelope.open .letter{
+transform:translateY(-120px);
 }
 
-/* ===== VÒNG QUAY ===== */
+/* ================= */
+/* VÒNG QUAY */
+/* ================= */
 
 #wheelBox{
+
 display:none;
+
 position:fixed;
+
 top:50%;
 left:50%;
+
 transform:translate(-50%,-50%);
+
 }
 
-.wheelGame{
+.wheelContainer{
+
 position:relative;
-width:450px;
-height:450px;
+
+width:420px;
+height:420px;
+
 }
 
 #wheel{
+
 border-radius:50%;
-border:12px solid white;
-box-shadow:
-0 0 0 8px #ff69b4,
-0 0 40px rgba(0,0,0,0.4);
+
+border:10px solid white;
+
+box-shadow:0 0 30px rgba(0,0,0,0.4);
 
 transition:transform 5s cubic-bezier(.17,.67,.28,1.33);
+
 }
 
 .pointer{
+
 position:absolute;
+
 top:-15px;
 left:50%;
+
 transform:translateX(-50%);
+
 width:0;
 height:0;
+
 border-left:15px solid transparent;
 border-right:15px solid transparent;
+
 border-bottom:30px solid red;
-z-index:5;
-}
-
-.spinBtn{
-
-position:absolute;
-top:50%;
-left:50%;
-
-transform:translate(-50%,-50%);
-
-width:120px;
-height:120px;
-
-border-radius:50%;
-
-background:#ff1493;
-color:white;
-
-font-size:18px;
-border:none;
-
-cursor:pointer;
-
-}
-
-.back{
-
-margin-top:20px;
-padding:10px 20px;
-
-background:#ff69b4;
-border:none;
-color:white;
-border-radius:20px;
-
-position:absolute;
-left:50%;
-transform:translateX(-50%);
-bottom:-60px;
 
 }
 
 /* hoa */
 
 canvas{
+
 position:fixed;
 top:0;
 left:0;
+
 pointer-events:none;
+
 }
 
 </style>
@@ -205,40 +242,37 @@ pointer-events:none;
 
 <body>
 
-<div class="overlay"></div>
-
 <h1>🌸 Chúc mừng 8/3 🌸</h1>
 
 <div class="box">
 
 <p>Nhập STT của bạn</p>
 
-<input id="stt" type="number">
+<input id="stt">
 
 <br>
 
-<button onclick="openLetter()">💌 Nhận thiệp</button>
+<button onclick="openLetter()">Nhận thiệp</button>
 
-<button onclick="openWheel()">🎁 Vòng quay</button>
+<button onclick="openWheel()">Vòng quay</button>
 
 </div>
 
-<!-- ===== THIỆP ===== -->
+<!-- THIỆP -->
 
 <div id="letterBox">
 
 <div class="envelope" id="envelope">
 
+<div class="body"></div>
+
 <div class="flap"></div>
 
-<div class="paper">
+<div class="letter">
 
 <h2 id="name"></h2>
 
-<p>
-Chúc bạn luôn xinh đẹp, học giỏi và có một ngày
-<strong>8/3 thật vui vẻ ❤️</strong>
-</p>
+<p>Chúc bạn có một ngày 8/3 thật vui vẻ ❤️</p>
 
 <button onclick="closeLetter()">← Trở về</button>
 
@@ -248,21 +282,23 @@ Chúc bạn luôn xinh đẹp, học giỏi và có một ngày
 
 </div>
 
-<!-- ===== VÒNG QUAY ===== -->
+<!-- VÒNG QUAY -->
 
 <div id="wheelBox">
 
-<div class="wheelGame">
+<div class="wheelContainer">
 
 <div class="pointer"></div>
 
-<canvas id="wheel" width="450" height="450"></canvas>
+<canvas id="wheel" width="420" height="420"></canvas>
 
-<button class="spinBtn" onclick="spin()">QUAY</button>
-
-<button onclick="closeWheel()" class="back">← Trở về</button>
+<button onclick="spin()" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)">
+QUAY
+</button>
 
 </div>
+
+<button onclick="closeWheel()">← Trở về</button>
 
 </div>
 
@@ -273,33 +309,8 @@ Chúc bạn luôn xinh đẹp, học giỏi và có một ngày
 /* danh sách */
 
 const girls={
-1:"Dương Thị Thảo Ái",
-3:"Nguyễn Thị Bình Dương",
-4:"Nguyễn Thị Linh Đan",
-7:"Nguyễn Thị Thúy Kiều",
-8:"Dương Thùy Linh",
-9:"Khổng Thị Linh",
-10:"Lê Thị Linh",
-11:"Hồ Thị Khánh Ly",
 12:"Võ Thị Ly",
-13:"Nguyễn Thị Thanh Mai",
-14:"Lê Thị Thương Mây",
-15:"Trần Thị Thanh Nga",
-16:"Nguyễn Lê Thùy Ngân",
-17:"Nguyễn Thị Thanh Ngân",
-20:"Trần Thị Thanh Ngọc",
-22:"Nguyễn Ngọc Phương Nhã",
-25:"Nguyễn Ngọc Quỳnh Như",
-28:"Nguyễn Thị Minh Phương",
 30:"Hoàng Thị Diệu Thanh",
-31:"Đào Thị Thanh Thảo",
-32:"Nguyễn Thị Thanh Thảo",
-33:"Lê Thị Thắm",
-34:"Phan Thị Thơm",
-36:"Phan Thị Anh Thư",
-37:"Võ Thị Ngọc Trâm",
-38:"Võ Thị Thùy Trâm",
-39:"Mai Thị Vân",
 40:"Lê Thị Hà Vi"
 }
 
@@ -332,17 +343,19 @@ document.getElementById("envelope").classList.remove("open")
 
 }
 
-/* ===== vòng quay ===== */
+/* ================= */
+/* VÒNG QUAY */
+/* ================= */
 
 const prizes=["Kẹo","Chocolate","Hoa","Quà","Bánh","Lời khen"]
+
 const colors=["#ff9aa2","#ffb7b2","#ffdac1","#e2f0cb","#b5ead7","#c7ceea"]
 
 const wheel=document.getElementById("wheel")
+
 const ctx=wheel.getContext("2d")
 
-const size=450
-const center=size/2
-const radius=200
+const center=210
 
 function drawWheel(){
 
@@ -354,7 +367,7 @@ ctx.beginPath()
 
 ctx.moveTo(center,center)
 
-ctx.arc(center,center,radius,i*angle,(i+1)*angle)
+ctx.arc(center,center,200,i*angle,(i+1)*angle)
 
 ctx.fillStyle=colors[i]
 
@@ -366,13 +379,13 @@ ctx.translate(center,center)
 
 ctx.rotate(i*angle+angle/2)
 
+ctx.textAlign="center"
+
 ctx.fillStyle="#333"
 
 ctx.font="18px Poppins"
 
-ctx.textAlign="center"
-
-ctx.fillText(prizes[i],130,10)
+ctx.fillText(prizes[i],120,10)
 
 ctx.restore()
 
@@ -395,7 +408,9 @@ rotation+=360*5+(360-rand*angle)
 wheel.style.transform="rotate("+rotation+"deg)"
 
 setTimeout(()=>{
+
 alert("Bạn nhận được: "+prizes[rand])
+
 },5000)
 
 }
@@ -408,9 +423,12 @@ function closeWheel(){
 document.getElementById("wheelBox").style.display="none"
 }
 
-/* ===== hoa rơi ===== */
+/* ================= */
+/* HOA RƠI */
+/* ================= */
 
 const canvas=document.getElementById("petals")
+
 const ctx2=canvas.getContext("2d")
 
 canvas.width=window.innerWidth
@@ -421,10 +439,15 @@ let petals=[]
 for(let i=0;i<40;i++){
 
 petals.push({
+
 x:Math.random()*canvas.width,
+
 y:Math.random()*canvas.height,
-size:Math.random()*6+3,
+
+size:Math.random()*5+3,
+
 speed:Math.random()*1+0.5
+
 })
 
 }
@@ -438,14 +461,19 @@ ctx2.fillStyle="pink"
 for(let p of petals){
 
 ctx2.beginPath()
+
 ctx2.arc(p.x,p.y,p.size,0,Math.PI*2)
+
 ctx2.fill()
 
 p.y+=p.speed
 
 if(p.y>canvas.height){
+
 p.y=0
+
 p.x=Math.random()*canvas.width
+
 }
 
 }
